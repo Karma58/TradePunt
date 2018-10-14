@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+  <link rel="stylesheet" href="styles.css">
+<style>
+/* Style the input */
+textarea {
+  margin: 0;
+  border: solid;
+  border-radius: 0;
+  border-width: 1px;
+  width: 75%;
+  padding: 10px;
+  float: left;
+  font-size: 16px;
+}
+/* Style the "Add" button */
+.addItem {
+  padding: 10px;
+  width: 25%;
+  background: #d9d9d9;
+  color: #555;
+  float: left;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+}
+
+.addItem:hover {
+  background-color: #bbb;
+}
+</style>
+
+<head>
+</head>
+<body>
+
+<div class="navigation">
+  <li><a href="index.html">Home</a></li>
+  <li><a class="active" href="selling.html">Selling</a></li>
+  <li><a href="prefrences.html">Prefrences</a></li>
+  <li><a href="about.html">About</a></li>
+</div>
+
+
+ <!input type="text" id="addItemInput" placeholder="Title...">
+<form id="id-additemdescription" >
+<textarea name="textarea" placeholder="Description..." style="width:90%;height:120px;"></textarea>
+
+<!input type="file" name="imgfileinput" accept=".jpg, .jpeg, .png" single>
+
+
+<table style="width:60%;border-style: dotted;">
+  <td>
+<div id="holder">
+  <p>  Drag a cover here (.jpg, .jpeg or .png)  </p>
+  </div>
+<p id="id-selectedimage"></p>
+  </td>
+</table>
+
+
+  <span  class="addItem" onclick="addItem()">Add</span>
+
+</form>
+<script>
+const {ipcRenderer} = require('electron') 
+
+//---------------------------------------
+    document.addEventListener('drop', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+	var filelocation=e.dataTransfer.files[0].path
+if ((filelocation.search('jpg')>0)||(filelocation.search('png')>0)||(filelocation.search('gif')>0))
+{
+
+ document.getElementById("id-selectedimage").innerHTML =filelocation
+}
+    });
+    document.addEventListener('dragover', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    });
+//---------------------------------
+function addItem() {
+
+var newitemdescription =document.getElementById("id-additemdescription").elements[0].value
+var newitemcover =document.getElementById("id-selectedimage").innerHTML;
+
+if (newitemdescription !=''){
+	if (newitemcover !=''){
+		ipcRenderer.send('asynchronous-addfilerequest',newitemcover)
+
+		ipcRenderer.on('asynchronous-addfilerequest-reply', (event, arg) => {
+
+
+		ipcRenderer.send('asynchronous-additem',newitemdescription+';'+arg)
+
+		})
+	} else {
+	ipcRenderer.send('asynchronous-additem',newitemdescription+';'+';'+';')
+	}
+}
+
+window.location.href="selling.html"
+}
+</script>
+
+
+
+</body>
+</html>

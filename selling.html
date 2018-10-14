@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+
+  <link rel="stylesheet" href="styles.css">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+/* Style the list items */
+ul li {
+  position: relative;
+  padding: 12px 8px 12px 40px;
+  list-style-type: none;
+  background: #eee;
+  font-size: 18px;
+  transition: 0.2s;
+  
+}
+
+/* Set all odd list items to a different color (zebra-stripes) */
+ul li:nth-child(odd) {
+  background: #f9f9f9;
+}
+
+/* When clicked on, add a background color and strike out text */
+ul li.checked {
+  background: #888;
+  color: #fff;
+  text-decoration: line-through;
+}
+
+/* Add a "checked" mark when clicked on */
+ul li.checked::before {
+  content: '';
+  position: absolute;
+  border-color: #fff;
+  border-style: solid;
+  border-width: 0 2px 2px 0;
+  top: 10px;
+  left: 16px;
+  transform: rotate(45deg);
+  height: 15px;
+  width: 7px;
+}
+
+/* Style the close button */
+.close {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 12px 16px 12px 16px;
+}
+
+.close:hover {
+  cursor: pointer;
+  background-color: #f44336;
+  color: white;
+}
+
+/* Style the header */
+.header {
+  background-color: #f44336;
+  padding: 30px 40px;
+  color: white;
+  text-align: center;
+}
+
+/* Clear floats after the header */
+.header:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Style the input */
+input {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  width: 75%;
+  padding: 10px;
+  float: left;
+  font-size: 16px;
+}
+
+/* Style the "Add" button */
+.addItem {
+  
+  background: #d9d9d9;
+  color: #555;
+  float: left;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 0;
+}
+
+.addItem:hover {
+  background-color: #bbb;
+}
+
+a:link {
+  
+    color: black;
+    background-color: transparent;
+    text-decoration: none;
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="navigation">
+  <li><a href="index.html">Home</a></li>
+  <li><a class="active" href="selling.html">Selling</a></li>
+  <li><a href="prefrences.html">Prefrences</a></li>
+  <li><a href="about.html">About</a></li>
+
+ </div>
+
+
+
+<h2 style="margin:5px">Item to be sold </h2>
+
+
+<button >
+
+<!div id="id-submititem">
+
+<a href="addItem.html">Add new item</a>
+</button>
+
+<!/div>
+
+<ul id="myUL">
+</ul>
+
+<script>
+
+
+const {ipcRenderer} = require('electron') 
+
+ipcRenderer.send('asynchronous-addeditemsrequest','')
+
+ipcRenderer.on('asynchronous-addeditemsrequest-reply', (event, arg) => {
+var argarr=arg.split(';')
+  
+if ((argarr.length-1)>0) {
+var j;
+var itemnum=0
+for ( j = 0; j < (argarr.length-1); j+=2) {
+
+//----------------------------------------------------
+// Create a new list item when clicking on the "Add" button
+  var inputValue = argarr[itemnum*2];
+var li = document.createElement("li");
+li.id = itemnum.toString();
+
+
+ var tbl     = document.createElement("table");
+        var tblBody = document.createElement("tbody")
+	tblBody.setAttribute("width", "700");
+
+
+            var row = document.createElement("tr");
+  
+		if (argarr[itemnum*2+1]!=''){
+             	var imgcell = document.createElement("td");    
+ 
+		var imgcellContent = document.createElement("IMG");
+    		imgcellContent.setAttribute("src", argarr[itemnum*2+1]);
+    		imgcellContent.setAttribute("width", "304");
+    		imgcellContent.setAttribute("height", "228");
+    		//imgcellContent.setAttribute("alt", "The Pulpit Rock");
+
+                imgcell.appendChild(imgcellContent);
+                row.appendChild(imgcell);
+		}
+
+             	var cell = document.createElement("td");    
+
+var t=inputValue.split('\n')
+	if(t[0].length>0){         
+           cell.appendChild(document.createTextNode(t[0]));
+         }
+         for(var i=1;i<t.length;i++){
+            cell.appendChild(document.createElement('BR'));
+            if(t[i].length>0){
+              cell.appendChild(document.createTextNode(t[i]));
+            }
+         } 
+		
+		
+                cell.setAttribute("style", "display: inline-block;");
+                row.appendChild(cell);
+
+ tblBody.appendChild(row);
+		
+ tbl.appendChild(tblBody);
+
+li.appendChild(tbl);
+
+
+
+    document.getElementById("myUL").appendChild(li);
+
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+
+span.addEventListener('click', function(ev) {
+ var div = this.parentElement;
+      div.style.display = "none";
+ipcRenderer.send('asynchronous-deleteitem',div.id)
+}, false);
+
+
+  li.appendChild(span);
+itemnum+=1
+}
+
+//-----------------------------------------------------
+
+}
+})
+//-------------------------------------------
+
+
+</script>
+
+</body>
+</html>
+

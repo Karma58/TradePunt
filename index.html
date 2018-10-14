@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+  <link rel="stylesheet" href="styles.css">
+
+<head>
+</head>
+<body>
+
+<div class="navigation">
+  <li><a class="active" href="index.html">Home</a></li>
+  <li><a href="selling.html">Selling</a></li>
+  <li><a href="prefrences.html">Prefrences</a></li>
+  <li><a href="about.html">About</a></li>
+</div>
+
+ <div class="search-navigation">
+<img class="title" src="icons/title.png">
+
+
+  <div class="search-container" href="index.html">
+
+
+
+    <form action="javascript:displaySearch()" id="id-searchbox">
+      <input type="text" placeholder="Search .." name="fname">
+      <button type="submit" style="height: 32px"><!img src="icons/search.png"style="height: 17px"><!i class="fa fa-search"><!/i>
+<img src="icons/search.png" class="search-icon" height="10" width="10">
+</button>
+    </form>
+  </div>
+</div>
+
+<p>Sort by<select id="id-sortselect">
+  <option value="distance">Nearest</option>
+</select>
+<button onclick="sortResults()"> Ok </button>
+</p>
+
+
+<p id="main-greeting">Welcome !</p>
+<!------------------------------>
+<!-- Search result -->
+<div id="id-mainelement">
+
+<script>
+
+
+
+//------------------------------------------
+function displaySearch() {
+const {ipcRenderer} = require('electron') 
+ipcRenderer.send('asynchronous-searchrequest',document.getElementById("id-searchbox").elements[0].value)
+
+for (var reexec=0;reexec<10;reexec++){		setTimeout(function (){
+
+ ipcRenderer.on('asynchronous-searchrequest-reply', (event, arg) => {
+
+document.getElementById("main-greeting").innerHTML = "search results found for " +arg;
+var argarr=arg.split(';')
+ 
+if ((argarr.length-1)>0) {
+var element = document.getElementById("id-mainelement");
+        var tbl     = document.createElement("table");
+        var tblBody = document.createElement("tbody")
+
+var j;
+var itemnum=0
+for ( j = 0; j < (argarr.length-1); j+=3) {
+
+
+
+	
+	
+            var row = document.createElement("tr");
+		//-------------------------------------
+		if (argarr[itemnum*3+1]!=''){
+		var imgcell = document.createElement("td");    
+ 
+		var imgcellContent = document.createElement("IMG");
+    		imgcellContent.setAttribute("src", argarr[itemnum*3+1]);
+    		imgcellContent.setAttribute("width", "304");
+    		imgcellContent.setAttribute("height", "228");
+    		imgcellContent.setAttribute("alt", "The Pulpit Rock");
+
+                imgcell.appendChild(imgcellContent);
+                row.appendChild(imgcell);
+		}
+		//----------------------------------
+             	var cell = document.createElement("td");    
+		var inputValue = argarr[itemnum*3];
+var t=inputValue.split('\n')
+	if(t[0].length>0){         
+           cell.appendChild(document.createTextNode(t[0]));
+         }
+         for(var i=1;i<t.length;i++){
+            cell.appendChild(document.createElement('BR'));
+            if(t[i].length>0){
+              cell.appendChild(document.createTextNode(t[i]));
+            }
+         } 
+
+
+		cell.setAttribute("style", "display: inline-block;");
+                row.appendChild(cell);
+
+
+
+            tblBody.appendChild(row);
+//-------------------------
+var rowplus = document.createElement("tr");
+var cellplus = document.createElement("td");
+ cellplus.appendChild(document.createTextNode("Distance "+argarr[itemnum*3+2]+"km" ));
+rowplus.appendChild(cellplus);
+tblBody.appendChild(rowplus);
+//-------------------------
+		
+        //}
+
+        // append the <tbody> inside the <table>
+        tbl.appendChild(tblBody);
+        // put <table> in the <body>
+	element.replaceChild(tbl, element.childNodes[0]);
+
+        //element.appendChild(tbl);
+        // tbl border attribute to 
+        tbl.setAttribute("border", "0");
+itemnum+=1
+}
+
+}
+
+  })
+}, 1000);	}
+
+
+}
+//----------------------------------------
+function sortResults() {
+const {ipcRenderer} = require('electron') 
+
+var e = document.getElementById("id-sortselect");
+var strUser = e.options[e.selectedIndex].value;
+
+ipcRenderer.send('asynchronous-searchsort',strUser)
+
+}
+
+</script>
+
+
+
+</body>
+</html>

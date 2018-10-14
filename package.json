@@ -1,0 +1,27 @@
+{
+  "name": "TradePunt",
+  "version": "0.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "",
+  "keywords": [
+    "electronjs",
+    "peertopeer"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^2.0.0"
+  },
+  "dependencies": {
+    "dat-swarm-defaults": "^1.0.1",
+    "discovery-swarm": "^5.1.2",
+    "get-port": "^4.0.0",
+    "iplocation": "^5.0.1",
+    "jsonfile": "^5.0.0",
+    "portfinder": "^1.0.17"
+  }
+}
