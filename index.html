@@ -45,6 +45,7 @@
 
 <script>
 
+maxitem=10
 
 
 //------------------------------------------
@@ -66,7 +67,8 @@ var element = document.getElementById("id-mainelement");
 
 var j;
 var itemnum=0
-for ( j = 0; j < (argarr.length-1); j+=3) {
+//for ( j = 0; j < (argarr.length-1); j+=3) {
+while ( (itemnum*3<(argarr.length-1)) && (itemnum<maxitem) ) {
 
 
 
