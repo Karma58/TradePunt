@@ -1,7 +1,5 @@
 # TradePunt
-Decentralized peer to peer ecommerce for everyone, everywhere
-
-For linux
+Decentralized peer to peer eCommerce for everyone, everywhere
 
 git clone https://github.com/Karma58/TradePunt
 
