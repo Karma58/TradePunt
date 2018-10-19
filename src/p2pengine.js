@@ -239,13 +239,14 @@ return datahsh
 }
 //---------------------------------------
 sendPeerItem(message,filedirectory,hash,peerId){
+	
+peers[peerId].conn.write('tradepunt-searchresult;'+message.toString()+';'+hash+';'+mylatitude+ ';'+mylongitude+';')
 
 if (filedirectory!=''){
 fs.readFile(filedirectory, (err, data) => {
   if (err) throw err;
   console.log('sending file length %d',data.length);
 
-peers[peerId].conn.write('tradepunt-searchresult;'+message.toString()+';'+hash+';'+mylatitude+ ';'+mylongitude+';')
 
 setTimeout(function (){
 
