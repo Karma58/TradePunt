@@ -195,7 +195,7 @@ if (this.cachedfiles[i].hash===hash){
  return this.cachedfiles[i].directory
 }
 }
-
+return ''
 }
 //---------------------------------------
 addItem(newdescription){
