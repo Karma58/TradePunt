@@ -53,6 +53,8 @@ function displaySearch() {
 const {ipcRenderer} = require('electron') 
 ipcRenderer.send('asynchronous-searchrequest',document.getElementById("id-searchbox").elements[0].value)
 
+var element = document.getElementById("id-mainelement");
+	
 for (var reexec=0;reexec<10;reexec++){		setTimeout(function (){
 
  ipcRenderer.on('asynchronous-searchrequest-reply', (event, arg) => {
@@ -61,7 +63,7 @@ document.getElementById("main-greeting").innerHTML = "search results found for "
 var argarr=arg.split(';')
  
 if ((argarr.length-1)>0) {
-var element = document.getElementById("id-mainelement");
+
         var tbl     = document.createElement("table");
         var tblBody = document.createElement("tbody")
 
@@ -135,7 +137,22 @@ itemnum+=1
   })
 }, 1000);	}
 
+//----------------------------
 
+//var elementff = document.getElementById("id-mainelement");
+var btn = document.createElement("BUTTON");
+var t = document.createTextNode("Add More Results");
+btn.setAttribute("onclick","moreSearch()");
+btn.appendChild(t);
+element.replaceChild(btn, element.childNodes[1]);
+
+//----------------------------
+
+}
+//----------------------------------------
+function moreSearch() {
+maxitem+=10
+displaySearch()
 }
 //----------------------------------------
 function sortResults() {
