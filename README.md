@@ -2,7 +2,7 @@
 <h1 align="center">
   <br>
   <a href="">
-    <img src=icons/logo.png" alt="TradePuntLogo" width="200">
+    <img src="icons/logo.png" alt="TradePuntLogo" width="200">
   </a>
   <br>
   TradePunt
