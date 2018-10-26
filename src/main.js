@@ -90,7 +90,7 @@ function createWindow () {
 //mainWindow.setMinimumSize(650,500)
 
   // and load the index.html of the app.
-  mainWindow.loadFile('index.html')
+  mainWindow.loadFile('selling.html')
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
